@@ -20,19 +20,19 @@ const Testimonials: React.FC = () => {
   ];
 
   return (
-    <section className="bg-[#101422] text-white py-24">
+    <section className="bg-[rgb(var(--color-surface-header))] text-[rgb(var(--color-text-primary))] py-24">
       <div className="container mx-auto px-6 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">Loved by Creatives Worldwide</h2>
-        <p className="text-gray-400 max-w-2xl mx-auto mb-16">Don't just take our word for it. Here's what our users are saying.</p>
+        <p className="text-[rgb(var(--color-text-secondary))] max-w-2xl mx-auto mb-16">Don't just take our word for it. Here's what our users are saying.</p>
         <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-[#1c1f2e] p-8 rounded-lg text-left flex flex-col">
+            <div key={index} className="bg-[rgb(var(--color-surface-card))] p-8 rounded-lg text-left flex flex-col">
               <p className="text-gray-300 mb-6 flex-grow">"{testimonial.quote}"</p>
               <div className="flex items-center">
-                <div className="w-12 h-12 rounded-full bg-red-500 flex-shrink-0 mr-4"></div>
+                <div className="w-12 h-12 rounded-full bg-[rgb(var(--color-brand-primary))] flex-shrink-0 mr-4"></div>
                 <div>
-                  <p className="font-bold text-white">{testimonial.name}</p>
-                  <p className="text-gray-400 text-sm">{testimonial.title}</p>
+                  <p className="font-bold text-[rgb(var(--color-text-primary))]">{testimonial.name}</p>
+                  <p className="text-[rgb(var(--color-text-secondary))] text-sm">{testimonial.title}</p>
                 </div>
               </div>
             </div>

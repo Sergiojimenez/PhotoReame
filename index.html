@@ -1,53 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PhotoRename</title>
+    <title>PhotoRename - AI Photo Renamer</title>
+    
+    <!-- Design Tokens and Global Styles -->
+    <style>
+      :root {
+        /* Color Palette */
+        --color-brand-primary: 239 68 68; /* red-500 */
+        --color-brand-primary-hover: 220 38 38; /* red-600 */
+        --color-brand-primary-active: 185 28 28; /* red-700 */
+        
+        --color-surface-base: 11 15 25; /* Custom dark blue */
+        --color-surface-card: 28 35 51; /* Slightly lighter dark blue */
+        --color-surface-header: 18 24 39; /* For header/footer */
+
+        --color-text-primary: 241 245 249; /* slate-100 */
+        --color-text-secondary: 161 172 192; /* Custom slate-400 ish */
+        --color-text-disabled: 100 116 139; /* slate-500 */
+        --color-text-on-brand: 255 255 255;
+        
+        --color-border-subtle: 45 55 77;
+        --color-border-interactive: 100 116 139; /* slate-500 */
+
+        /* Harmonized Semantic Palette */
+        --color-success: 20 184 166; /* teal-500 */
+        --color-warning: 245 158 11; /* amber-500 */
+        --color-danger: 220 38 38; /* red-600 */
+        --color-info: 67 56 202; /* indigo-600 */
+        
+        --color-focus: 239 68 68;
+        
+        /* Radii */
+        --radius-s: 8px;
+        --radius-m: 8px;
+        --radius-l: 10px;
+
+        /* Shadows */
+        --shadow-100: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-200: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-300: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-400: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      }
+      
+      body {
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: rgb(var(--color-surface-base));
+      }
+      
+      /* Simple scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgb(var(--color-surface-base));
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgb(var(--color-border-subtle));
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgb(var(--color-border-interactive));
+      }
+    </style>
+    
+    <!-- TailwindCSS for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Optional: Extend Tailwind config if needed
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
-  }
-}
-</script>
-<style>
-    @keyframes fade-in-down {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    @keyframes fade-in-up {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .animate-fade-in-down {
-      animation: fade-in-down 0.8s ease-out forwards;
-      opacity: 0;
-    }
-    .animate-fade-in-up {
-      animation: fade-in-up 0.8s ease-out forwards;
-      opacity: 0;
-    }
-</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
-  <body class="bg-[#0b0f19]">
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/"
+      }
+    }
+    </script>
+    
+    <script type="module" src="./index.tsx"></script>
+</body>
 </html>

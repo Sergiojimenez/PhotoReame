@@ -1,38 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import LandingPage from './LandingPage';
-import DesignSystem from './DesignSystem';
 import Pricing from './Pricing';
+import DesignSystem from './DesignSystem';
 import LoginPage from './LoginPage';
+import HolaSergioPage from './HolaSergioPage';
+import RenamerPage from './RenamerPage';
 
 const App: React.FC = () => {
-  // State to track the current route from the URL hash
   const [route, setRoute] = useState(window.location.hash);
 
-  // Effect to listen for hash changes (e.g., browser back/forward)
   useEffect(() => {
     const handleHashChange = () => {
       setRoute(window.location.hash);
     };
 
     window.addEventListener('hashchange', handleHashChange);
-
-    // Cleanup listener on component unmount
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, []);
 
-  // Determine which component to render based on the hash
-  switch (route) {
-    case '#/design-system':
-      return <DesignSystem />;
-    case '#/pricing':
-      return <Pricing />;
-    case '#/login':
-      return <LoginPage />;
-    default:
-      return <LandingPage />;
-  }
+  // Simple router based on hash
+  const getPageComponent = () => {
+    // Normalize route: remove leading # and optional /
+    const path = route.replace(/^#\/?/, '');
+
+    if (path.startsWith('pricing')) {
+      return Pricing;
+    }
+    if (path.startsWith('design-system')) {
+      return DesignSystem;
+    }
+    if (path.startsWith('login')) {
+      return LoginPage;
+    }
+    if (path.startsWith('hola-sergio')) {
+      return HolaSergioPage;
+    }
+    if (path.startsWith('renamer')) {
+      return RenamerPage;
+    }
+    // Default to LandingPage for home, features, etc.
+    return LandingPage;
+  };
+
+  const PageComponent = getPageComponent();
+
+  // Add a key to ensure the component remounts on route change,
+  // which is useful for triggering effects like scrolling on the landing page.
+  return <PageComponent key={route} />;
 };
 
 export default App;

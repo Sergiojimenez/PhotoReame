@@ -1,51 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PhotoIcon from './PhotoIcon';
+import Button from './Button';
 
 interface HeaderProps {
   theme?: 'light' | 'dark';
 }
 
-const Header: React.FC<HeaderProps> = ({ theme = 'light' }) => {
-  const isDarkTheme = theme === 'dark';
-  
-  const headerBaseClasses = "fixed top-0 left-0 w-full z-50 backdrop-blur-lg border-b transition-colors duration-300";
-  const themeClasses = isDarkTheme 
-    ? 'bg-[#101422]/80 border-slate-300/10 text-slate-200' 
-    : 'bg-slate-200/80 border-slate-900/10 text-gray-800';
-
-  const linkHoverClass = isDarkTheme 
-    ? 'hover:text-white hover:bg-white/5' 
-    : 'hover:text-gray-900 hover:bg-black/5';
-    
-  const linkClasses = `font-medium transition-colors duration-300 rounded-md px-3 py-2 ${linkHoverClass}`;
+const Header: React.FC<HeaderProps> = ({ theme = 'dark' }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleNav = (hash: string) => {
-    if (hash === '#') {
-        return;
-    }
     window.location.hash = hash;
+    setIsMenuOpen(false);
   };
+  
+  const headerClasses = `fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
+    theme === 'dark' 
+      ? 'bg-[rgb(var(--color-surface-header),0.8)] border-b border-[rgb(var(--color-border-subtle))] backdrop-blur-md' 
+      : 'bg-white/80 border-b border-gray-200 backdrop-blur-md'
+  }`;
+
+  const textColor = theme === 'dark' ? 'text-[rgb(var(--color-text-primary))]' : 'text-gray-800';
 
   return (
-    <header className={`${headerBaseClasses} ${themeClasses}`}>
-      <nav className="container mx-auto px-6 py-3 flex justify-between items-center">
-        <button onClick={() => handleNav('/')} className={`flex items-center space-x-2 p-2 rounded-md transition-colors duration-300 ${linkHoverClass}`}>
-          <PhotoIcon className="w-8 h-8 text-red-600" />
-          <span className="text-xl font-bold">PhotoRename</span>
-        </button>
-        <div className="hidden md:flex items-center space-x-2">
-          <button onClick={() => handleNav('#')} className={linkClasses}>Features</button>
-          <button onClick={() => handleNav('#')} className={linkClasses}>How It Works</button>
-          <button onClick={() => handleNav('#/pricing')} className={linkClasses}>Pricing</button>
-          <button onClick={() => handleNav('#/design-system')} className={linkClasses}>Design System</button>
+    <header className={headerClasses}>
+      <div className="container mx-auto px-6 h-20 flex justify-between items-center">
+        <div 
+          className="flex items-center space-x-2 cursor-pointer"
+          onClick={() => handleNav('')}
+        >
+          <PhotoIcon className={`w-8 h-8 text-[rgb(var(--color-brand-primary))]`} />
+          <span className={`text-xl font-bold ${textColor}`}>PhotoRename</span>
         </div>
-        <div className="flex items-center space-x-4">
-          <button onClick={() => handleNav('#/login')} className={`hidden md:block ${linkClasses}`}>Sign In</button>
-          <button className="bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-5 rounded-md hover:from-red-600 hover:to-red-700 hover:shadow-lg hover:shadow-red-500/30 transform hover:-translate-y-px transition-all duration-300">
-            Try Free
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center space-x-2">
+          <Button variant="text" color={theme === 'dark' ? 'neutral' : 'inverted'} onClick={() => handleNav('#features')}>Features</Button>
+          <Button variant="text" color={theme === 'dark' ? 'neutral' : 'inverted'} onClick={() => handleNav('#/pricing')}>Pricing</Button>
+          <Button variant="text" color={theme === 'dark' ? 'neutral' : 'inverted'} onClick={() => handleNav('#how-it-works')}>How it Works</Button>
+        </nav>
+        
+        <div className="hidden md:flex items-center space-x-2">
+           <Button variant="text" color={theme === 'dark' ? 'neutral' : 'inverted'} onClick={() => handleNav('#/login')}>Log In</Button>
+           <Button variant="filled" size="m" onClick={() => handleNav('#/renamer')}>Open App</Button>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={`focus:outline-none ${textColor}`}>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              {isMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+              )}
+            </svg>
           </button>
         </div>
-      </nav>
+      </div>
+      
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className={`md:hidden ${theme === 'dark' ? 'bg-[rgb(var(--color-surface-header))] border-t border-[rgb(var(--color-border-subtle))]' : 'bg-white border-t border-gray-200'}`}>
+          <nav className="container mx-auto px-6 py-4 flex flex-col space-y-2">
+              <Button variant="text" color={theme === 'dark' ? 'neutral' : 'inverted'} className="w-full justify-start" onClick={() => handleNav('#features')}>Features</Button>
+              <Button variant="text" color={theme === 'dark' ? 'neutral' : 'inverted'} className="w-full justify-start" onClick={() => handleNav('#/pricing')}>Pricing</Button>
+              <Button variant="text" color={theme === 'dark' ? 'neutral' : 'inverted'} className="w-full justify-start" onClick={() => handleNav('#how-it-works')}>How it Works</Button>
+              <div className="pt-4 mt-2 border-t border-[rgb(var(--color-border-subtle))] flex flex-col space-y-2">
+                <Button variant="outlined" className="w-full" onClick={() => handleNav('#/login')}>Log In</Button>
+                <Button variant="filled" className="w-full" onClick={() => handleNav('#/renamer')}>Open App</Button>
+              </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
